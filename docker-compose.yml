@@ -10,7 +10,7 @@ services:
     networks:
       - poll-tier
     restart: always
-    environement:
+    environment:
       REDIS: redis
 
   redis:
@@ -32,7 +32,7 @@ services:
     networks:
       - back-tier
     restart: always
-    environement:
+    environment:
       REDIS: "redis"
       DB: "db"
 
