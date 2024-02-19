@@ -11,30 +11,22 @@ services:
       - poll-tier
     restart: always
     environment:
-      REDIS: redis
+      REDIS_HOST: "redis"
+      OPTION_A: "Ansible"
+      OPTION_B: "Chef"
+      OPTION_C: "Puppet"
+      OPTION_D: "SaltStack"
 
   redis:
     image: redis
     expose:
       - 6379
-    ports:
+    networks:
       - poll-tier
       - back-tier
     restart: always
-    environement:
-      PORT: 6379
-
-  worker:
-    build: ./worker
-    depends_on:
-      - redis
-      - db
-    networks:
-      - back-tier
-    restart: always
     environment:
-      REDIS: "redis"
-      DB: "db"
+      PORT: 6379
 
   db:
     image: postgres:9.4
@@ -46,6 +38,24 @@ services:
       - result-tier
     restart: always
     environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+
+  worker:
+    build: ./worker
+    depends_on:
+      - redis
+      - db
+    networks:
+      - back-tier
+    restart: always
+    environment:
+      REDIS_HOST: "redis"
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
@@ -60,6 +70,8 @@ services:
     networks:
     - result-tier
     environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
