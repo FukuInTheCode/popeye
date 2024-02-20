@@ -12,4 +12,6 @@ FROM eclipse-temurin:21-jre-alpine
 
 COPY --from=builder /usr/src/app .
 
+COPY --from=builder /usr/src/app/target/worker-jar-with-dependencies.jar .
+
 CMD ["java", "-jar", "worker-jar-with-dependencies.jar"]
