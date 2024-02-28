@@ -18,7 +18,7 @@ services:
       OPTION_D: "SaltStack"
 
   redis:
-    image: redis
+    image: redis:7
     ports:
       - 6379:6379
     networks:
@@ -29,7 +29,7 @@ services:
       PORT: 6379
 
   db:
-    image: postgres:9.4
+    image: postgres:16
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./schema.sql:/docker-entrypoint-initdb.d/init.sql
